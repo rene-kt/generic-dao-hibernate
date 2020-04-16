@@ -3,6 +3,7 @@ package generico;
 
 import model.bean.Pessoa;
 import connection.ConnectionFactory;
+import java.util.List;
 import javax.persistence.EntityManager;
  
 
@@ -47,6 +48,22 @@ public abstract class DaoGenerico<T extends Pessoa> {
         }finally{
             em.close();
         }
+    }
+    
+    public List findAll(Class clazz) {
+        List<T> objects = null;
+
+        try {
+            em.getTransaction().begin();
+            
+            objects = em.createQuery("from "+clazz.getName()).getResultList();
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }finally{
+            em.close();
+        }
+        return objects;
     }
 
 }
